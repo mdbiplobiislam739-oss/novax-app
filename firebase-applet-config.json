@@ -1,0 +1,10 @@
+{
+  "projectId": "trx-hub",
+  "appId": "1:892148163672:web:25989babc689811c2e162d",
+  "apiKey": "AIzaSyABAxfZPWtZf5dUWwa-gxnhMKEnYe9f4DI",
+  "authDomain": "trx-hub.firebaseapp.com",
+  "firestoreDatabaseId": "(default)",
+  "storageBucket": "trx-hub.firebasestorage.app",
+  "messagingSenderId": "892148163672",
+  "measurementId": "G-4TKXSNTLGB"
+}

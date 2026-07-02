@@ -1,0 +1,192 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and state",
+      "type": "object",
+      "properties": {
+        "username": { "type": "string" },
+        "password": { "type": "string" },
+        "phone": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "admin"] },
+        "balance": { "type": "number" },
+        "totalEarnings": { "type": "number" },
+        "vipLevel": { "type": "number" },
+        "trc20Address": { "type": "string" },
+        "referrerId": { "type": "string" },
+        "createdAt": { "type": "number" },
+        "lastMiningDate": { "type": "number" },
+        "isBlocked": { "type": "boolean" }
+      },
+      "required": ["username", "password", "role", "balance"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "Financial operation",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "type": { "type": "string", "enum": ["deposit", "withdraw", "mining", "buy_product", "commission"] },
+        "amount": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected", "completed"] },
+        "timestamp": { "type": "number" },
+        "txHash": { "type": "string" }
+      },
+      "required": ["userId", "type", "amount", "status", "timestamp"]
+    },
+    "Notice": {
+      "title": "Notice",
+      "description": "System notices",
+      "type": "object",
+      "properties": {
+        "text": { "type": "string" },
+        "isActive": { "type": "boolean" },
+        "timestamp": { "type": "number" }
+      },
+      "required": ["text", "isActive", "timestamp"]
+    },
+    "PaymentMethod": {
+      "title": "Payment Method",
+      "description": "Admin created deposit methods",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "network": { "type": "string" },
+        "address": { "type": "string" }
+      },
+      "required": ["name", "network", "address"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Store products",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "hash": { "type": "string" },
+        "price": { "type": "number" },
+        "img": { "type": "string" }
+      },
+      "required": ["name", "price", "img"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "User purchases",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "productId": { "type": "string" },
+        "price": { "type": "number" },
+        "status": { "type": "string", "enum": ["completed"] },
+        "timestamp": { "type": "number" }
+      },
+      "required": ["userId", "productId", "price", "status", "timestamp"]
+    },
+    "SystemStatus": {
+      "title": "SystemStatus",
+      "description": "Global config state",
+      "type": "object",
+      "properties": {
+        "supportLink": { "type": "string" },
+        "systemBalance": { "type": "number" }
+      }
+    },
+    "TradePosition": {
+      "title": "Trade Position",
+      "description": "Open trading position",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "symbol": { "type": "string" },
+        "isLong": { "type": "boolean" },
+        "entryPrice": { "type": "number" },
+        "margin": { "type": "number" },
+        "leverage": { "type": "number" },
+        "size": { "type": "number" },
+        "tp": { "type": "number" },
+        "sl": { "type": "number" },
+        "openTime": { "type": "number" }
+      },
+      "required": ["userId", "symbol", "isLong", "entryPrice", "margin", "leverage", "size", "openTime"]
+    },
+    "TradeOrder": {
+      "title": "Trade Order",
+      "description": "Limit trading order",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "symbol": { "type": "string" },
+        "isLong": { "type": "boolean" },
+        "limitPrice": { "type": "number" },
+        "margin": { "type": "number" },
+        "leverage": { "type": "number" },
+        "size": { "type": "number" },
+        "tp": { "type": "number" },
+        "sl": { "type": "number" },
+        "timestamp": { "type": "number" }
+      },
+      "required": ["userId", "symbol", "isLong", "limitPrice", "margin", "leverage", "size", "timestamp"]
+    },
+    "TradeHistory": {
+      "title": "Trade History",
+      "description": "Closed trading position history",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "symbol": { "type": "string" },
+        "isLong": { "type": "boolean" },
+        "entryPrice": { "type": "number" },
+        "closePrice": { "type": "number" },
+        "margin": { "type": "number" },
+        "leverage": { "type": "number" },
+        "size": { "type": "number" },
+        "pnl": { "type": "number" },
+        "reason": { "type": "string" },
+        "openTime": { "type": "number" },
+        "closeTime": { "type": "number" }
+      },
+      "required": ["userId", "symbol", "isLong", "entryPrice", "closePrice", "margin", "leverage", "size", "pnl", "reason", "openTime", "closeTime"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "All system users including admin"
+    },
+    "/transactions/{txId}": {
+      "schema": { "$ref": "#/entities/Transaction" },
+      "description": "Deposit, withdraw, and earning logs"
+    },
+    "/notices/{noticeId}": {
+      "schema": { "$ref": "#/entities/Notice" },
+      "description": "Site announcements"
+    },
+    "/paymentMethods/{methodId}": {
+      "schema": { "$ref": "#/entities/PaymentMethod" },
+      "description": "Allowed deposit methods"
+    },
+    "/products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Available products"
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/Order" },
+      "description": "Purchase records"
+    },
+    "/config/system": {
+      "schema": { "$ref": "#/entities/SystemStatus" },
+      "description": "Global settings singleton"
+    },
+    "/tradePositions/{positionId}": {
+      "schema": { "$ref": "#/entities/TradePosition" },
+      "description": "User's open positions"
+    },
+    "/tradeOrders/{orderId}": {
+      "schema": { "$ref": "#/entities/TradeOrder" },
+      "description": "User's limit orders"
+    },
+    "/tradeHistory/{historyId}": {
+      "schema": { "$ref": "#/entities/TradeHistory" },
+      "description": "User's closed positions"
+    }
+  }
+}
